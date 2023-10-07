@@ -1,11 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ProfileData from './ProfileData';
+import ProfileService from '../../services/ProfileService';
 
-function ProfileList() {
+const ProfileList = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
+    const [profiles, setProfiles] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        const fetchData = async () =>{
+            setLoading(true);
+            try{
+                const response = await ProfileService.getProfiles();
+                setProfiles(response.data);
+                console.log(profiles);
+            }catch(error){
+                console.log(error);
+            }
+            setLoading(false);
+        };
+        fetchData();
+    }, [])
+
+    const deleteProfile = (e,id) => {
+        e.preventDefault();
+        ProfileService.deleteProfile(id).then((res)=>{
+            if(profiles){
+                setProfiles((prevProfiles) => {
+                    return prevProfiles.filter((profile) => profile.id !== id);
+                })
+            }
+        })
+    }
+   
 
     const handleChange = (e) => {
         setSearch(e.target.value);
@@ -42,9 +72,13 @@ function ProfileList() {
                         <th className='text-center font-medium text-gray-600 uppercase py-3 px-6'>Edit/Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <ProfileData/>
-                </tbody>
+                    {!loading && (
+                        <tbody className='bg-white'>
+                            {profiles.map((profile) => (
+                                <ProfileData profile ={profile} deleteProfile = {deleteProfile} key={profile.id}/>
+                            ))}
+                        </tbody>
+                    )}
             </table>
 
         </div>

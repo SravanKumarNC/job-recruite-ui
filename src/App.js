@@ -51,8 +51,8 @@ function App() {
           {/* Update */}
           <Route path='/editRecruiter/:id' element={<EditRecruiter/>}/>
           <Route path='/editprofiledetails/:id' element={<EditProfileDetails/>}/>
-          <Route path='/editshortlistedprofiles/:id' element={<EditInterviewSchedule/>}/>
-          <Route path='/editprofile' element={<EditProfile/>}/>
+          <Route path='/editinterviewschedule/:id' element={<EditInterviewSchedule/>}/>
+          <Route path='/editprofile/:id' element={<EditProfile/>}/>
           <Route path='/editshortlistedprofiles/:id' element={<EditShortlistedProfiles/>}/>
           
          </Routes>

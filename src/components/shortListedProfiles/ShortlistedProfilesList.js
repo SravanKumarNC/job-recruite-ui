@@ -1,11 +1,40 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ShortlistedProfilesData from './ShortlistedProfilesData';
+import ShortlistedProfilesService from '../../services/ShortlistedProfilesService';
 
 function ShortlistedProfilesList() {
     const navigate = useNavigate();
+    const [shortlistedProfiles, setShortlistedProfiles] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            setLoading(true);
+            try{
+                const response = await ShortlistedProfilesService.getShortlistedProfiles()
+                setShortlistedProfiles(response.data);
+            }catch(error){
+                console.log(error);
+            }
+            setLoading(false);
+        }
+        fetchData();
+    },[])
+
+    const deleteShortlistedProfiles = (e, id) => {
+        e.preventDefault();
+        ShortlistedProfilesService.deleteShortlistedProfiles(id)
+        .then((res)=>{
+            if(shortlistedProfiles){
+                setShortlistedProfiles((prev) => {
+                    return prev.filter((shortlisted) => shortlisted.id !== id);
+                })
+            }
+        })
+    }
 
     const handleChange = (e) => {
         setSearch(e.target.value);
@@ -43,9 +72,13 @@ function ShortlistedProfilesList() {
                         <th className='text-center font-medium text-gray-600 uppercase py-3 px-6'>Edit/Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <ShortlistedProfilesData/>
-                </tbody>
+                {!loading && (
+                    <tbody className='bg-white'>
+                        {shortlistedProfiles.map((shortlistedProfile) => (
+                            <ShortlistedProfilesData shortlistedProfile = {shortlistedProfile} deleteShortlistedProfiles ={deleteShortlistedProfiles} key={shortlistedProfile.id}/>
+                        ))}
+                    </tbody>
+                )}
             </table>
 
         </div>

@@ -7,7 +7,7 @@ function InterviewScheduleData() {
 
     const editInterviewSchedule = (e, id)=>{
         e.preventDefault();
-        navigate(`/editshortlistedprofiles/${id}`);
+        navigate(`/editinterviewschedule/${id}`);
     }
 
   return (

@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import RecruiterService from "../services/RecruiterService";
 import { useNavigate } from "react-router-dom";
 
+
 const AddRecruiter = () => {
+
+    
 
     const [recruiter, setRecruiter] = useState({
         id: "",
@@ -34,6 +37,8 @@ const AddRecruiter = () => {
         })
     }
 
+   
+
     const reset = (e)=>{
         e.preventDefault();
         setRecruiter({
@@ -53,7 +58,7 @@ const AddRecruiter = () => {
 
     return (
         <div className="flex max-w-2xl shadow border-b mx-auto">
-            <div className="px-5 py-5">
+            <form className="px-5 py-5" >
                 <div className="font-bold text-2xl tracking-wider ">
                     <h1 className="">Add Recruiter</h1>
                 </div>
@@ -64,6 +69,7 @@ const AddRecruiter = () => {
                         name="id" 
                         value={recruiter.id} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -74,6 +80,7 @@ const AddRecruiter = () => {
                         name="first_name" 
                         value={recruiter.first_name} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -84,6 +91,7 @@ const AddRecruiter = () => {
                         name="last_name" 
                         value={recruiter.last_name} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -94,6 +102,7 @@ const AddRecruiter = () => {
                         name="company_name" 
                         value={recruiter.company_name} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -124,6 +133,7 @@ const AddRecruiter = () => {
                         name="city" 
                         value={recruiter.city} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -134,6 +144,7 @@ const AddRecruiter = () => {
                         name="state" 
                         value={recruiter.state} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -144,6 +155,7 @@ const AddRecruiter = () => {
                         name="zip" 
                         value={recruiter.zip} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -154,6 +166,7 @@ const AddRecruiter = () => {
                         name="mobile" 
                         value={recruiter.mobile} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -164,6 +177,7 @@ const AddRecruiter = () => {
                         name="email" 
                         value={recruiter.email} 
                         onChange={(e) => handleChange(e)}
+                        
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -173,7 +187,7 @@ const AddRecruiter = () => {
                         onClick={reset} 
                         className="rounded text-white font-semibold bg-red-500 hover:bg-red-400 px-8 py-3">Clear</button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }

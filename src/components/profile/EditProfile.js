@@ -1,9 +1,48 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ProfileService from '../../services/ProfileService';
 
 function EditProfile() {
 
     const navigate = useNavigate()
+    const {id} = useParams();
+
+    const [profile, setProfile] = useState({
+        id: id,
+        profile_detail_id: "",
+        document: "",
+        status:"",
+        uploaded_on:"",
+    });
+
+    const handleChange = (e) =>{
+        const value = e.target.value;
+        setProfile({...profile, [e.target.name]: value}) 
+    }
+
+    useEffect(() =>{
+        const fetchData = async () => {
+            try{
+                const response = await ProfileService.getProfileById(profile.id);
+                setProfile(response.data);
+            }catch(error){
+                console.log(error);
+            }
+        };
+        fetchData();
+    },[profile.id])
+
+    const updatedProfile = (e) => {
+        e.preventDefault();
+        console.log(profile);
+        ProfileService.updateProfile(profile, id)
+            .then((response) => {
+                navigate("/profile");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
   return (
     <div className="flex max-w-2xl shadow border-b mx-auto">
@@ -16,18 +55,18 @@ function EditProfile() {
                     <input 
                         type="text" 
                         name="id" 
-                        // value={recruiter.id} 
-                        // onChange={(e) => handleChange(e)}
+                        value={profile.id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Profile Details id </label>
+                    <label className="block">Profile Details Id </label>
                     <input 
                         type="text" 
-                        name="first_name" 
-                        // value={recruiter.first_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="profile_detail_id" 
+                        value={profile.profile_detail_id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -35,9 +74,9 @@ function EditProfile() {
                     <label className="block">Document</label>
                     <input 
                         type="text" 
-                        name="last_name" 
-                        // value={recruiter.last_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="document" 
+                        value={profile.document} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -45,9 +84,9 @@ function EditProfile() {
                     <label className="block">Status</label>
                     <input 
                         type="text" 
-                        name="company_name" 
-                        // value={recruiter.company_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="status" 
+                        value={profile.status} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -55,15 +94,15 @@ function EditProfile() {
                     <label className="block">Uploaded On</label>
                     <input 
                         type="text" 
-                        name="address1" 
-                        // value={recruiter.address1}
-                        // onChange={(e) => handleChange(e)} 
+                        name="uploaded_on" 
+                        value={profile.uploaded_on}
+                        onChange={(e) => handleChange(e)} 
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full  my-4 space-x-4 pt-2">
                     <button 
-                        // onClick={updateRecruiter} 
+                        onClick={updatedProfile} 
                         className="rounded text-white font-semibold bg-green-500 hover:bg-green-400 px-6 py-3">
                         Update
                     </button>

@@ -1,8 +1,42 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ShortlistedProfilesService from '../../services/ShortlistedProfilesService';
 
 function EditShortlistedProfiles() {
+    const {id} = useParams();
     const navigate = useNavigate();
+    const[shortlistedProfile, setShortlistedProfile] = useState({
+        id:id,
+        recruiter_id:"",
+        profile_id:"",
+        company_name:"",
+        status:"",
+        last_interviewed_on:""
+    })
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setShortlistedProfile({...shortlistedProfile, [e.target.name]:value});
+    }
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const response = await ShortlistedProfilesService.getShortlistedProfileById(shortlistedProfile.id);
+                setShortlistedProfile(response.data);
+            }catch(error){
+                console.log(error);
+            }
+        }
+        fetchData();
+    },[shortlistedProfile.id])
+
+    const updateShortlistedProfiles = (e) => {
+        e.preventDefault();
+        ShortlistedProfilesService.updateShortlistedProfiles(shortlistedProfile, id)
+        .then((response) => {navigate("/shortlistedprofile")})
+        .catch((error) => {console.log(error)});
+    } 
+
   return (
     <div className="flex max-w-2xl shadow border-b mx-auto">
             <div className="px-5 py-5">
@@ -14,8 +48,8 @@ function EditShortlistedProfiles() {
                     <input 
                         type="text" 
                         name="id" 
-                        // value={recruiter.id} 
-                        // onChange={(e) => handleChange(e)}
+                        value={shortlistedProfile.id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -23,9 +57,9 @@ function EditShortlistedProfiles() {
                     <label className="block">Recruiter id </label>
                     <input 
                         type="text" 
-                        name="first_name" 
-                        // value={recruiter.first_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="recruiter_id" 
+                        value={shortlistedProfile.recruiter_id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -33,9 +67,9 @@ function EditShortlistedProfiles() {
                     <label className="block">Profile Id</label>
                     <input 
                         type="text" 
-                        name="last_name" 
-                        // value={recruiter.last_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="profile_id" 
+                        value={shortlistedProfile.profile_id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -44,8 +78,8 @@ function EditShortlistedProfiles() {
                     <input 
                         type="text" 
                         name="company_name" 
-                        // value={recruiter.company_name} 
-                        // onChange={(e) => handleChange(e)}
+                        value={shortlistedProfile.company_name} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -53,9 +87,9 @@ function EditShortlistedProfiles() {
                     <label className="block">Status</label>
                     <input 
                         type="text" 
-                        name="address1" 
-                        // value={recruiter.address1}
-                        // onChange={(e) => handleChange(e)} 
+                        name="status" 
+                        value={shortlistedProfile.status}
+                        onChange={(e) => handleChange(e)} 
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -63,15 +97,15 @@ function EditShortlistedProfiles() {
                     <label className="block">Last Interviewed On</label>
                     <input 
                         type="text" 
-                        name="address1" 
-                        // value={recruiter.address1}
-                        // onChange={(e) => handleChange(e)} 
+                        name="last_interviewed_on" 
+                        value={shortlistedProfile.last_interviewed_on}
+                        onChange={(e) => handleChange(e)} 
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full  my-4 space-x-4 pt-2">
                     <button 
-                        // onClick={updateRecruiter} 
+                        onClick={updateShortlistedProfiles} 
                         className="rounded text-white font-semibold bg-green-500 hover:bg-green-400 px-6 py-3">
                         Update
                     </button>

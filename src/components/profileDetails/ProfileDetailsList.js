@@ -1,15 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ProfileDetailsData from './ProfileDetailsData';
+import ProfileDetailsService from '../../services/ProfileDetailsService';
 
-function ProfileDetailsList() {
+const ProfileDetailsList = () => {
     const navigate = useNavigate();
-    const [search, setSearch] = useState("");
+    const[loading, setLoading] = useState(true);
+    const[profileDetails, setProfileDetails] = useState(null);
+    const[search, setSearch] = useState("");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try{
+                const response = await ProfileDetailsService.getProfileDetails();
+                setProfileDetails(response.data);
+            }catch(error){
+                console.log(error);
+            }
+            setLoading(false);
+        };
+        fetchData();
+    },[])
+
+    const deleteProfileDetails = (e, id) => {
+        e.preventDefault();
+        ProfileDetailsService.deleteProfileDetails(id).then((res) => {
+            if(profileDetails){
+                setProfileDetails((prevProfileDetails) => {
+                    return prevProfileDetails.filter((profileDetail) => profileDetail.id !== id);
+                })
+            }
+        })
+    }
 
     const handleChange = (e) => {
         setSearch(e.target.value);
     }
+    console.log(search);
 
   return (
     <div className='container mx-2 my-2'>
@@ -42,9 +71,13 @@ function ProfileDetailsList() {
                         <th className='text-center font-medium text-gray-600 uppercase py-3 px-6'>Edit/Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <ProfileDetailsData/>
-                </tbody>
+                    {!loading && (
+                        <tbody className='bg-white'>
+                            {profileDetails.map((profileDetail) => (
+                                <ProfileDetailsData profileDetail ={profileDetail} deleteProfileDetails ={deleteProfileDetails} key={profileDetail.id}/>
+                            ))}
+                        </tbody>
+                    )}
             </table>
 
         </div>
