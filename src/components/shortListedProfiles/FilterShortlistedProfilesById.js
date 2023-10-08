@@ -63,7 +63,7 @@ function FilterShortlistedProfilesById() {
                 <td className='text-left px-6 py-4 whitespace-nowrap'>
                   <div className='text-sm text-gray-600'>{shortlistedProfile.status}</div>
                 </td>
-                <td className='text-left px-6 py-4 whitespace-nowrap'>
+                <td className='text-center px-6 py-4 whitespace-nowrap'>
                   <div className='text-sm text-gray-600'>{shortlistedProfile.last_interviewed_on}</div>
                 </td>
               </tr>

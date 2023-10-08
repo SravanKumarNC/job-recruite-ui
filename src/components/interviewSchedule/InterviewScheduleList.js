@@ -1,12 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import InterviewScheduleData from './InterviewScheduleData';
+import InterviewScheduleService from '../../services/InterviewScheduleService';
 
 function InterviewScheduleList() {
 
     const navigate = useNavigate();
+
+    const[interviewSchedules, setInterviewSchedules] = useState(null);
+    const[loading, setLoading]=useState(true);
     const [search, setSearch] = useState("");
+
+    useEffect(()=>{
+        const fetchData = async() => {
+            setLoading(true);
+            try{
+                const response = await InterviewScheduleService.getInterviewSchedules();
+                setInterviewSchedules(response.data);
+            }catch(error){
+                console.log(error);
+            }
+            setLoading(false);
+        }
+        fetchData();
+    },[])
+
+    const deleteInterviewSchedule = (e, id) => {
+        e.preventDefault();
+        InterviewScheduleService.deleteInterviewSchedule(id)
+        .then((res)=>{
+            if(interviewSchedules){
+                setInterviewSchedules((prev) => {
+                    return prev.filter((interviewSchedule) => interviewSchedule.id !== id);
+                })
+            }
+        })
+    }
+
+    
 
     const handleChange = (e) => {
         setSearch(e.target.value);
@@ -44,9 +76,13 @@ function InterviewScheduleList() {
                         <th className='text-center font-medium text-gray-600 uppercase py-3 px-6'>Edit/Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <InterviewScheduleData/>
-                </tbody>
+                {!loading && (
+                    <tbody className='bg-white'>
+                        {interviewSchedules.map((interviewSchedule) => (
+                            <InterviewScheduleData  interviewSchedule = {interviewSchedule} deleteInterviewSchedule = {deleteInterviewSchedule} key={interviewSchedule.id}/>
+                        ))}
+                    </tbody>
+                )}
             </table>
 
         </div>

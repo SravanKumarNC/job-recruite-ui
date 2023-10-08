@@ -1,9 +1,42 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import InterviewScheduleService from '../../services/InterviewScheduleService';
 
 function EditInterviewSchedule() {
 
+    const {id} = useParams();
     const navigate = useNavigate(); 
+    const[interviewSchedule, setInterviewSchedule] = useState({
+        id: id,
+        shortlist_id:"",
+        schedule_datetime:"",
+        interview_level:"",
+        status:"",
+        interviewer_details:""
+    })
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setInterviewSchedule({...interviewSchedule, [e.target.name]:value});
+    }
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const response = await InterviewScheduleService.getInterviewSchedulesById(id);
+                setInterviewSchedule(response.data);
+            }catch(error){
+                console.log(error);
+            }
+        }
+        fetchData();
+    },[interviewSchedule.id])
+
+    const updateInterviewSchedule = (e) => {
+        e.preventDefault();
+        InterviewScheduleService.updateInterviewSchedule(interviewSchedule, id)
+        .then((response) => {navigate("/interviewschedule");})
+        .catch((error) => {console.log(error)});
+    }
 
   return (
     <div className="flex max-w-2xl shadow border-b mx-auto">
@@ -16,8 +49,8 @@ function EditInterviewSchedule() {
                     <input 
                         type="text" 
                         name="id" 
-                        // value={recruiter.id} 
-                        // onChange={(e) => handleChange(e)}
+                        value={interviewSchedule.id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -25,9 +58,9 @@ function EditInterviewSchedule() {
                     <label className="block">Shortlist id </label>
                     <input 
                         type="text" 
-                        name="first_name" 
-                        // value={recruiter.first_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="shortlist_id" 
+                        value={interviewSchedule.shortlist_id} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -35,9 +68,9 @@ function EditInterviewSchedule() {
                     <label className="block">Schedule DateTime</label>
                     <input 
                         type="text" 
-                        name="last_name" 
-                        // value={recruiter.last_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="schedule_datetime" 
+                        value={interviewSchedule.schedule_datetime} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -45,9 +78,9 @@ function EditInterviewSchedule() {
                     <label className="block">Interview Level</label>
                     <input 
                         type="text" 
-                        name="company_name" 
-                        // value={recruiter.company_name} 
-                        // onChange={(e) => handleChange(e)}
+                        name="interview_level" 
+                        value={interviewSchedule.interview_level} 
+                        onChange={(e) => handleChange(e)}
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -55,9 +88,9 @@ function EditInterviewSchedule() {
                     <label className="block">Status</label>
                     <input 
                         type="text" 
-                        name="address1" 
-                        // value={recruiter.address1}
-                        // onChange={(e) => handleChange(e)} 
+                        name="status" 
+                        value={interviewSchedule.status}
+                        onChange={(e) => handleChange(e)} 
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
@@ -65,15 +98,15 @@ function EditInterviewSchedule() {
                     <label className="block">Interviewer Details</label>
                     <input 
                         type="text" 
-                        name="address1" 
-                        // value={recruiter.address1}
-                        // onChange={(e) => handleChange(e)} 
+                        name="interviewer_details" 
+                        value={interviewSchedule.interviewer_details}
+                        onChange={(e) => handleChange(e)} 
                         className="h-8 w-96 border mt-2 px-2 py-2">
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full  my-4 space-x-4 pt-2">
                     <button 
-                        // onClick={updateRecruiter} 
+                        onClick={updateInterviewSchedule} 
                         className="rounded text-white font-semibold bg-green-500 hover:bg-green-400 px-6 py-3">
                         Update
                     </button>

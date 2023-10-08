@@ -42,7 +42,7 @@ function FilterProfileById() {
                     <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>Profile Details Id</th>
                     <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>Document</th>
                     <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>status</th>
-                    <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>updated on</th>
+                    <th className='text-center font-medium text-gray-600 uppercase py-3 px-6'>updated on</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +59,7 @@ function FilterProfileById() {
                   <td className='text-left px-6 py-4 whitespace-nowrap'>
                     <div className='text-sm text-gray-600'>{profile.status}</div>
                   </td>
-                  <td className='text-left px-6 py-4 whitespace-nowrap'>
+                  <td className='text-center px-6 py-4 whitespace-nowrap'>
                     <div className='text-sm text-gray-600'>{profile.uploaded_on}</div>
                   </td>
               </tr>

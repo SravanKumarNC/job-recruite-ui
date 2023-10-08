@@ -14,7 +14,7 @@ const Navbar = () => {
                 <ul className="flex items-center justify-between">
                     <li className="px-8 py-8 font-semibold hover:text-gray-700"><Link to={"/"} >Recruiter</Link></li>
                     <li className="px-8 py-8 font-semibold hover:text-gray-700"><Link to={"/shortlistedProfile"}>Shortlisted Profiles</Link></li>
-                    <li className="px-8 py-8 font-semibold hover:text-gray-700"><Link to={"/interviewShedule"}>Interview Schedule</Link></li>
+                    <li className="px-8 py-8 font-semibold hover:text-gray-700"><Link to={"/interviewSchedule"}>Interview Schedule</Link></li>
                     <li className="px-8 py-8 font-semibold hover:text-gray-700"><Link to={"/Profile"}>Profie</Link></li>
                     <li className="px-8 py-8 font-semibold hover:text-gray-700"><Link to={"/profiledetails"}>Profie Details</Link></li>
                 </ul>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useAsyncError, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProfileDetailsService from '../../services/ProfileDetailsService';
 
 function FilterProfileDetailsById() {
@@ -41,7 +41,7 @@ function FilterProfileDetailsById() {
                     <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>First Name</th>
                     <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>Last Name</th>
                     <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>Mobile</th>
-                    <th className='text-left font-medium text-gray-600 uppercase py-3 px-6'>Email</th>
+                    <th className='text-center font-medium text-gray-600 uppercase py-3 px-6'>Email</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +58,7 @@ function FilterProfileDetailsById() {
                 <td className='text-left px-6 py-4 whitespace-nowrap'>
                   <div className='text-sm text-gray-600'>{profileDetail.mobile}</div>
                 </td>
-                <td className='text-left px-6 py-4 whitespace-nowrap'>
+                <td className='text-center px-6 py-4 whitespace-nowrap'>
                   <div className='text-sm text-gray-600'>{profileDetail.email}</div>
                 </td>
               </tr>

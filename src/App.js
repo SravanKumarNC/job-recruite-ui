@@ -32,7 +32,7 @@ function App() {
           <Route index element={<RecruiterList/>}/>
           {/* Get All */}
           <Route path="/recruiterList" element={<RecruiterList/>}/>
-          <Route path="/interviewShedule" element={<InterviewScheduleList/>}/>
+          <Route path="/interviewSchedule" element={<InterviewScheduleList/>}/>
           <Route path="/Profile" element={<ProfileList/>}/>
           <Route path='/profiledetails' element={<ProfileDetailsList/>}/>
           <Route path="/shortlistedProfile" element={<ShortlistedProfilesList/>}/>
