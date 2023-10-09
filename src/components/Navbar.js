@@ -6,7 +6,7 @@ const Navbar = () => {
     
 
     return(
-        <div className="bg-gray-400 w-full flex items-center justify-between">
+        <div className="container bg-gray-400 min-w-full flex items-center justify-between">
             <div className="h-16  flex items-center ">
                 <p className='text-black hover:text-gray-700 font-bold px-2'><Link to={"/"}>JOB RECRUITMENT</Link></p>
             </div>

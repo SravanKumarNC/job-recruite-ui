@@ -13,9 +13,13 @@ function EditShortlistedProfiles() {
         status:"",
         last_interviewed_on:""
     })
+
+    const[validationErrors, setValidationErrors] = useState({});
+
     const handleChange = (e) => {
-        const value = e.target.value;
-        setShortlistedProfile({...shortlistedProfile, [e.target.name]:value});
+        const {value, name} = e.target;
+        setShortlistedProfile((prevShortlisted)=>({...prevShortlisted, [name]:value}));
+        setValidationErrors((prevErrors) => ({...prevErrors, [name]:""}));
     }
 
     useEffect(()=>{
@@ -33,8 +37,20 @@ function EditShortlistedProfiles() {
     const updateShortlistedProfiles = (e) => {
         e.preventDefault();
         ShortlistedProfilesService.updateShortlistedProfiles(shortlistedProfile, id)
-        .then((response) => {navigate("/shortlistedprofile")})
-        .catch((error) => {console.log(error)});
+        .then((response) => {
+            navigate("/shortlistedprofile")
+        })
+        .catch((error) => {
+            if(error.response && error.response.status === 400){
+                const responseData = error.response.data;
+                console.log(responseData);
+                console.error('Validation Errors:', responseData);
+                
+                setValidationErrors(responseData);
+            }else{
+                console.error('Error:', error);
+            }
+        });
     } 
 
   return (
@@ -44,7 +60,10 @@ function EditShortlistedProfiles() {
                     <h1 className="">Edit Shortlisted Profiles</h1>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Id</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Id</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="id" 
@@ -54,7 +73,10 @@ function EditShortlistedProfiles() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Recruiter id </label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Recruiter Id</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.recruiter_id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="recruiter_id" 
@@ -64,7 +86,10 @@ function EditShortlistedProfiles() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Profile Id</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Profile Id</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.profile_id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="profile_id" 
@@ -74,7 +99,10 @@ function EditShortlistedProfiles() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Company Name</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Company Name</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.company_name}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="company_name" 
@@ -84,7 +112,10 @@ function EditShortlistedProfiles() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Status</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Status</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.status}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="status" 
@@ -94,7 +125,10 @@ function EditShortlistedProfiles() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Last Interviewed On</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Last Interviewed On</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.last_interviewed_on}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="last_interviewed_on" 

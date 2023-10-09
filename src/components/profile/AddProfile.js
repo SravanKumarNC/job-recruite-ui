@@ -15,16 +15,27 @@ function AddProfile() {
     uploaded_on: ""
   })
 
+  const[validationErrors, setValidationErrors] = useState({});
+
   const handleChange =(e)=>{
-    const value = e.target.value;
-    setProfile({...profile, [e.target.name]: value})
+    const {value, name} = e.target;
+    setProfile((prevProfile)=>({...prevProfile, [name]: value}));
+    setValidationErrors((prevError) => ({...prevError, [name]:""}));
   }
   const submitProfile = (e)=>{
     e.preventDefault();
     ProfileService.submitProfile(profile).then((response) => {
         navigate("/profile")
     }).catch((error)=>{
-        console.log(error);
+      if(error.response && error.response.status === 400){
+        const responseData = error.response.data;
+        console.log(responseData);
+        console.error('Validation Errors:', responseData);
+        
+        setValidationErrors(responseData);
+      }else{
+        console.error('Error:', error);
+      }
     })
   }
 
@@ -37,6 +48,7 @@ function AddProfile() {
       status: "",
       uploaded_on:""
     })
+    setValidationErrors({});
   }
 
   return (
@@ -46,7 +58,10 @@ function AddProfile() {
           <h1 className=''>Add Profile</h1>
         </div>
         <div className="items-center justify-center h-12      w-full my-4">
-          <label className="block">Id</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Id</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.id}</label>}
+          </div>
           <input 
             type="text" 
             name="id" 
@@ -56,7 +71,10 @@ function AddProfile() {
           </input>
         </div>
         <div className="items-center justify-center h-12      w-full my-4">
-          <label className="block">Profile Details ID</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Profile Details Id</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.profile_detail_id}</label>}
+          </div>
           <input 
             type="text" 
             name="profile_detail_id" 
@@ -66,7 +84,10 @@ function AddProfile() {
           </input>
         </div>
         <div className="items-center justify-center h-12      w-full my-4">
-          <label className="block">Document</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Document</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.document}</label>}
+          </div>
           <input 
             type="text" 
             name="document" 
@@ -76,7 +97,10 @@ function AddProfile() {
           </input>
         </div>
         <div className="items-center justify-center h-12      w-full my-4">
-          <label className="block">Status</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Status</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.status}</label>}
+          </div>
           <input 
             type="text" 
             name="status" 
@@ -86,7 +110,10 @@ function AddProfile() {
           </input>
         </div>
         <div className="items-center justify-center h-12      w-full my-4">
-          <label className="block">Uploaded On </label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Uploaded )n</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.uploaded_on}</label>}
+          </div>
           <input 
             type="text" 
             name="uploaded_on" 

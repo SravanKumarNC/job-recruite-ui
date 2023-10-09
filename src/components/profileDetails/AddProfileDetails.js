@@ -13,17 +13,29 @@ const AddProfileDetails = () => {
     email:""
   });
 
+  const[validationErrors, setValidationErrors] = useState({});
+
   const handleChange = (e) => {
-    const value = e.target.value;
-    setProfileDetail({...profileDetail, [e.target.name]: value});
+    const {value, name} = e.target;
+    setProfileDetail((prevProfileDetails)=>({...prevProfileDetails, [name]: value}));
+    setValidationErrors((prevError) => ({...prevError,[name]:""}));
   }
 
   const submitProfileDetails = (e) => {
     e.preventDefault();
-    ProfileDetailsService.submitProfileDetails(profileDetail).then((response) => {
+    ProfileDetailsService.submitProfileDetails(profileDetail)
+    .then((response) => {
       navigate("/profiledetails")
     }).catch((error) => {
-      console.log(error);
+      if(error.response && error.response.status === 400){
+        const responseData = error.response.data;
+        console.log(responseData);
+        console.error('Validation Errors:', responseData);
+        
+        setValidationErrors(responseData);
+      }else{
+        console.error('Error:', error);
+      }
     })
   }
 
@@ -36,6 +48,7 @@ const AddProfileDetails = () => {
       mobile:"",
       email:""
     })
+    setValidationErrors({});
   }
 
   return (
@@ -45,7 +58,10 @@ const AddProfileDetails = () => {
           <h1>Add Profile Details</h1>
         </div>
         <div className="items-center justify-center h-12 w-full my-4">
-          <label className="block">Id</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Id</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.id}</label>}
+          </div>
           <input 
             type="text" 
             name="id" 
@@ -55,7 +71,10 @@ const AddProfileDetails = () => {
           </input>
         </div>
         <div className="items-center justify-center h-12 w-full my-4">
-          <label className="block">First Name</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">First Name</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.first_name}</label>}
+          </div>
           <input 
             type="text" 
             name="first_name" 
@@ -65,7 +84,10 @@ const AddProfileDetails = () => {
           </input>
         </div>
         <div className="items-center justify-center h-12 w-full my-4">
-          <label className="block">Last Name</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Last Name</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.last_name}</label>}
+          </div>
           <input 
             type="text" 
             name="last_name" 
@@ -75,7 +97,10 @@ const AddProfileDetails = () => {
           </input>
         </div>
         <div className="items-center justify-center h-12 w-full my-4">
-          <label className="block">Mobile</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Mobile</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.mobile}</label>}
+          </div>
           <input 
             type="text" 
             name="mobile" 
@@ -85,7 +110,10 @@ const AddProfileDetails = () => {
           </input>
         </div>
         <div className="items-center justify-center h-12 w-full my-4">
-          <label className="block">Email</label>
+          <div className='flex'>
+            <label className="inline-block mr-4">Email</label>
+            {validationErrors && <label className='block text-red-600'>{validationErrors.email}</label>}
+          </div>
           <input 
             type="text" 
             name="email" 

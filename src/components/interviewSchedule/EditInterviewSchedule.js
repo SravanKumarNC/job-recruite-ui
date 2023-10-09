@@ -14,9 +14,13 @@ function EditInterviewSchedule() {
         status:"",
         interviewer_details:""
     })
+
+    const[validationErrors, setValidationErrors] = useState({});
+
     const handleChange = (e) => {
-        const value = e.target.value;
-        setInterviewSchedule({...interviewSchedule, [e.target.name]:value});
+        const {value, name} = e.target;
+        setInterviewSchedule((prevInterview)=>({...prevInterview, [name]:value}));
+        setValidationErrors((prevError)=>({...prevError,[name]:""}));
     }
 
     useEffect(()=>{
@@ -34,8 +38,20 @@ function EditInterviewSchedule() {
     const updateInterviewSchedule = (e) => {
         e.preventDefault();
         InterviewScheduleService.updateInterviewSchedule(interviewSchedule, id)
-        .then((response) => {navigate("/interviewschedule");})
-        .catch((error) => {console.log(error)});
+        .then((response) => {
+            navigate("/interviewschedule");
+        })
+        .catch((error) => {
+            if(error.response && error.response.status === 400){
+                const responseData = error.response.data;
+                console.log(responseData);
+                console.error('Validation Errors:', responseData);
+                
+                setValidationErrors(responseData);
+            }else{
+                console.error('Error:', error);
+            }
+        });
     }
 
   return (
@@ -45,7 +61,10 @@ function EditInterviewSchedule() {
                     <h1 className="">Edit InterviewSchedule</h1>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Id</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Id</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="id" 
@@ -55,7 +74,10 @@ function EditInterviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Shortlist id </label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Shortlist Id</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.shortlist_id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="shortlist_id" 
@@ -65,7 +87,10 @@ function EditInterviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Schedule DateTime</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Schedule Datetime</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.schedule_datetime}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="schedule_datetime" 
@@ -75,7 +100,10 @@ function EditInterviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Interview Level</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Interview Level</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.interview_level}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="interview_level" 
@@ -85,7 +113,10 @@ function EditInterviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Status</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>status</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.status}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="status" 
@@ -95,7 +126,10 @@ function EditInterviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Interviewer Details</label>
+                    <div className='flex'>
+                        <label className=' inline-block mr-4'>Interviewer Details</label>
+                        {validationErrors && <label className="block text-red-600">{validationErrors.interviewer_details}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="interviewer_details" 
@@ -111,7 +145,7 @@ function EditInterviewSchedule() {
                         Update
                     </button>
                     <button
-                        onClick={() => navigate("/interviewShedule")} 
+                        onClick={() => navigate("/interviewSchedule")} 
                         className="rounded text-white font-semibold bg-red-500 hover:bg-red-400 px-8 py-3">Cancle</button>
                 </div>
             </div>

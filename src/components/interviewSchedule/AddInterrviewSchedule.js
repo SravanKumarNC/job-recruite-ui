@@ -13,11 +13,13 @@ function AddInterrviewSchedule() {
     interviewer_details:""
   })
 
+  const[validationErrors, setValidationErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    setInterviewSchedule({...interviewSchedule,[e.target.name]:value});
+    const {value, name} = e.target;
+    setInterviewSchedule((pevInterviewSchedule)=>({...pevInterviewSchedule,[name]:value}));
+    setValidationErrors((prevErrors) => ({...prevErrors, [name]:""}));
   }
 
   const submitInterviewSchedule = (e) => {
@@ -26,7 +28,15 @@ function AddInterrviewSchedule() {
     .then((response) => {
       navigate("/interviewschedule");
     }).catch((error) => {
-      console.log(error);
+      if(error.response && error.response.status === 400){
+        const responseData = error.response.data;
+        console.log(responseData);
+        console.error('Validation Errors:', responseData);
+        
+        setValidationErrors(responseData);
+      }else{
+        console.error('Error:', error);
+      }
     })
   }
 
@@ -49,7 +59,10 @@ function AddInterrviewSchedule() {
                     <h1 className="">Add Recruiter</h1>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Id</label>
+                    <div className='flex'>
+                      <label className="inline-block mr-4">Id</label>
+                      {validationErrors && <label className="block text-red-600">{validationErrors.id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="id" 
@@ -60,7 +73,10 @@ function AddInterrviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Shortlisted ID</label>
+                    <div className='flex'>
+                      <label className="inline-block mr-4">Shortlist Id</label>
+                      {validationErrors && <label className="block text-red-600">{validationErrors.shortlist_id}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="shortlist_id" 
@@ -70,7 +86,10 @@ function AddInterrviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Schedule Datetime</label>
+                    <div className='flex'>
+                      <label className="inline-block mr-4">Schedule Datetime</label>
+                      {validationErrors && <label className="block text-red-600">{validationErrors.schedule_datetime}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="schedule_datetime" 
@@ -80,7 +99,10 @@ function AddInterrviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Interview Level</label>
+                    <div className='flex'>
+                      <label className="inline-block mr-4">Interview Level</label>
+                      {validationErrors && <label className="block text-red-600">{validationErrors.interview_level}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="interview_level" 
@@ -90,7 +112,10 @@ function AddInterrviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Status</label>
+                    <div className='flex'>
+                      <label className="inline-block mr-4">Status</label>
+                      {validationErrors && <label className="block text-red-600">{validationErrors.status}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="status" 
@@ -100,7 +125,10 @@ function AddInterrviewSchedule() {
                     </input>
                 </div>
                 <div className="items-center justify-center h-12 w-full my-4">
-                    <label className="block">Interviewer Details</label>
+                    <div className='flex'>
+                      <label className="inline-block mr-4">Interviewer Details</label>
+                      {validationErrors && <label className="block text-red-600">{validationErrors.interviewer_details}</label>}
+                    </div>
                     <input 
                         type="text" 
                         name="interviewer_details" 
