@@ -78,7 +78,7 @@ function InterviewScheduleList() {
                 </thead>
                 {!loading && (
                     <tbody className='bg-white'>
-                        {interviewSchedules.map((interviewSchedule) => (
+                        {interviewSchedules?.map((interviewSchedule) => (
                             <InterviewScheduleData  interviewSchedule = {interviewSchedule} deleteInterviewSchedule = {deleteInterviewSchedule} key={interviewSchedule.id}/>
                         ))}
                     </tbody>

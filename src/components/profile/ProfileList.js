@@ -74,7 +74,7 @@ const ProfileList = () => {
                 </thead>
                     {!loading && (
                         <tbody className='bg-white'>
-                            {profiles.map((profile) => (
+                            {profiles?.map((profile) => (
                                 <ProfileData profile ={profile} deleteProfile = {deleteProfile} key={profile.id}/>
                             ))}
                         </tbody>

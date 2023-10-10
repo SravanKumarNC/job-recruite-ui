@@ -74,7 +74,7 @@ function ShortlistedProfilesList() {
                 </thead>
                 {!loading && (
                     <tbody className='bg-white'>
-                        {shortlistedProfiles.map((shortlistedProfile) => (
+                        {shortlistedProfiles?.map((shortlistedProfile) => (
                             <ShortlistedProfilesData shortlistedProfile = {shortlistedProfile} deleteShortlistedProfiles ={deleteShortlistedProfiles} key={shortlistedProfile.id}/>
                         ))}
                     </tbody>

@@ -79,7 +79,7 @@ const RecruiterList = () => {
 
                     {!loading && (
                         <tbody className='bg-white'>
-                            {recruiters.map((recruiter) => (
+                            {recruiters?.map((recruiter) => (
                                 <RecruiterData recruiter = {recruiter} deleteRecruiter = {deleteRecruiter} key={recruiter.id}/>
                             ))}
                         </tbody>
